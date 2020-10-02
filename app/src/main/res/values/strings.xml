@@ -1,0 +1,245 @@
+<!--
+/*
+ * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
+ *
+ * https://github.com/Digipom/easy-media-converter
+ *
+ * This file is part of Easy Media Converter.
+ *
+ * Easy Media Converter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Easy Media Converter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Easy Media Converter.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <!-- Main screen -->
+
+    <string name="app_name">Easy Media Converter</string>
+
+    <!-- Main screen menu options -->
+
+    <string name="communicate">Communicate</string>
+    <string name="send_feedback">Send feedback</string>
+    <string name="rate_the_app">Rate the app</string>
+    <string name="suggest_the_app_to_a_friend">Suggest the app to a friend</string>
+    <string name="more_apps">More apps</string>
+    <string name="about">About</string>
+
+    <string name="sendEmailSubject">[%s] Feedback</string>
+    <string name="sendLogsText">Please enter your feedback or bug report below. System information and app logs are included.</string>
+
+    <string name="shareAppSubject">Check out this app</string>
+    <string name="shareAppText">I am using %1$s and enjoying it! Try it out: %2$s @Digipom #android</string>
+
+    <string name="openFromSystemContentDescription">Open media file</string>
+
+    <!-- Recents -->
+
+    <string name="recent">Recent</string>
+    <string name="previous">Previous</string>
+
+    <!-- %s will be replaced with a recent timestamp. For instance: "Opened 31 minutes ago" -->
+    <string name="opened_relative_time">Opened %s</string>
+    <!-- %1$s will be replaced with the action name (i.e. Split), and %2$s will be replaced with the relative timestamp.
+         For example: "Split 31 minutes ago" -->
+    <string name="action_relative_time">%1$s %2$s</string>
+
+    <!-- Content description for button that clears items below the header. -->
+    <string name="clearContentDescription">Clear</string>
+
+    <!-- Content description for seeing more details (i.e. when a conversion has failed.) -->
+    <string name="moreDetailsContentDescription">More details</string>
+
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
+
+    <string name="deleteConfirmation">“%s” can’t be recovered once deleted.</string>
+
+    <!-- Media chooser -->
+
+    <string name="start_by_choosing_a_file">Get started by tapping the button below to choose a file.</string>
+
+    <!-- Player screen -->
+
+    <string name="title_activity_player">Edit</string>
+    <string name="title_activity_player_for_share_audio">Edit and convert audio</string>
+    <string name="title_activity_player_for_share_video">Edit and convert video</string>
+    <string name="start_looping">Start looping</string>
+    <string name="stop_looping">Stop looping</string>
+    <string name="rewind">Rewind</string>
+    <string name="fastforward">Fast-forward</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+
+    <!-- i,e, "1.0x" or "2.0x" -->
+    <string name="formattedSpeed">%sx</string>
+    <!-- Content description for accessibility purposes. -->
+    <string name="formattedSpeedContentDescription">Playback speed: %s</string>
+    <!-- Content description for elapsed time for accessibility purposes. -->
+    <string name="elaspedTimeContentDescription">Elapsed time: %s</string>
+    <!-- Content description for total time for accessibility purposes. -->
+    <string name="totalTimeContentDescription">Duration: %s</string>
+
+    <!-- Actions -->
+
+    <string name="chooseAnAction">Choose an action</string>
+
+    <string name="trim">Trim</string>
+    <string name="cut">Cut</string>
+    <string name="split">Split</string>
+    <string name="combine">Combine</string>
+    <string name="add_silence">Add silence</string>
+    <string name="set_as_ringtone">Set as ringtone</string>
+    <string name="adjust_volume">Adjust volume</string>
+    <string name="normalize">Normalize</string>
+    <string name="adjust_speed">Adjust speed</string>
+    <string name="convert">Convert</string>
+    <string name="convert_to_video">Make video</string>
+    <string name="extract_audio">Extract audio</string>
+
+    <string name="trimming">Trimming</string>
+    <string name="cutting">Cutting</string>
+    <string name="splitting">Splitting</string>
+    <string name="combining">Combining</string>
+    <string name="adding_silence">Adding silence</string>
+    <string name="setting_ringtone">Setting ringtone</string>
+    <string name="adjusting_volume">Adjusting volume</string>
+    <string name="normalizing">Normalizing</string>
+    <string name="adjusting_speed">Adjusting speed</string>
+    <string name="converting">Converting</string>
+    <string name="converting_to_video">Making video</string>
+    <string name="extracting_audio">Extracting audio</string>
+
+    <string name="trimmed">Trimmed</string>
+    <string name="was_cut">Cut</string>
+    <string name="was_split">Split</string>
+    <string name="combined">Combined</string>
+    <string name="added_silence">Added silence</string>
+    <string name="was_set_as_ringtone">Set as ringtone</string>
+    <string name="adjusted_volume">Adjusted volume</string>
+    <string name="normalized">Normalized</string>
+    <string name="adjusted_speed">Adjusted speed</string>
+    <string name="converted">Converted</string>
+    <string name="converted_to_video">Made video</string>
+    <string name="extracted_audio">Extracted audio</string>
+
+    <!-- Specific action strings -->
+
+    <string name="video">Video</string>
+    <string name="will_make_mp4_video">Audio will be exported as an MP4 video.</string>
+    <string name="cover_image_content_description">Cover image</string>
+    <string name="reset_to_default_content_description">Reset to default</string>
+
+    <string name="select_range_to_keep">Select range to keep</string>
+
+    <!-- Title for time picker dialog to update trim before time. -->
+    <string name="trimBefore">Trim before</string>
+    <!-- Title for time picker dialog to update trim after time. -->
+    <string name="trimAfter">Trim after</string>
+
+    <!-- Content description for trim before time for accessibility purposes. -->
+    <string name="trimBeforeContentDescription">Trim before time: %s</string>
+    <!-- Content description for trim after time for accessibility purposes. -->
+    <string name="trimAfterContentDescription">Trim after time: %s</string>
+
+    <string name="select_range_to_remove">Select range to remove</string>
+
+    <!-- Title for time picker dialog to update cut start time. -->
+    <string name="cutStart">Cut start</string>
+    <!-- Title for time picker dialog to update cut end time. -->
+    <string name="cutEnd">Cut end</string>
+
+    <!-- Content description for cut starting at time for accessibility purposes. -->
+    <string name="cutStartingAtContentDescription">Cut starting at time: %s</string>
+    <!-- Content description for cut ending at time for accessibility purposes. -->
+    <string name="cutEndingAtContentDescription">Cut until time: %s</string>
+
+    <string name="warning_remaining_section_would_be_too_short">Resulting recording would be too short.</string>
+
+    <string name="decreaseContentDescription">Decrease</string>
+    <string name="increaseContentDescription">Increase</string>
+
+    <string name="select_time_to_insert_silence">Select time to insert silence</string>
+    <string name="silence_duration">Silence duration</string>
+
+    <string name="will_normalize_using_ffmpeg_default">Audio will be normalized using FFMPEG’s EBU R128 loudness normalization.</string>
+
+    <string name="select_split_position">Select split position</string>
+    <string name="splitting_will_save_into_two_files">Splitting this file will save data into two files.</string>
+    <string name="warning_split_would_be_too_short">Resulting split would be too short.</string>
+
+
+    <string name="dragContentDescription">Drag</string>
+    <string name="removeContentDescription">Remove</string>
+
+    <string name="ringtone_type">Type</string>
+    <string name="ringtone_type_phone">Phone</string>
+    <string name="ringtone_type_notification">Notification</string>
+    <string name="ringtone_type_alarm">Alarm</string>
+
+    <!-- Time picker dialog -->
+
+    <string name="hours">Hours</string>
+    <string name="minutes">Minutes</string>
+    <string name="seconds">Seconds</string>
+    <string name="hundredths_of_milliseconds">x100 ms</string>
+    <string name="allowable_time_range">Allowable range: %1$s - %2$s</string>
+    <string name="apply">Apply</string>
+
+    <!-- Notifications -->
+
+    <string name="main_notification_channel">Main</string>
+    <string name="errors_notification_channel">Errors</string>
+    <string name="important_messages_channel">Important messages</string>
+
+    <string name="about_to_start">About to start</string>
+    <!-- I.e. "Converting My Recording 1.wav" -->
+    <string name="editing_template">%1$s %2$s</string>
+
+    <plurals name="items">
+        <!-- I.e. "My Recording 1.wav" -->
+        <item quantity="one">%1$s</item>
+        <!-- For example: "3 items" -->
+        <item quantity="other">%2$d items</item>
+    </plurals>
+
+    <string name="stop">Stop</string>
+
+    <!-- Errors -->
+
+    <!-- For example: Error making video -->
+    <string name="error_doing_action">Error %s</string>
+
+    <!-- Shown when the system's not able to create a new document for some reason. -->
+    <string name="error_could_not_create_new_document">Couldn’t create new file for output.</string>
+
+    <!-- Shown when the system's not able to open a document for some reason. -->
+    <string name="error_could_not_open_document">Couldn’t open input.</string>
+
+    <!-- Shown when the player couldn't read from an item. -->
+    <string name="couldnt_open_media_item">Couldn’t open media item</string>
+
+    <!-- Shown as a helper whenever we report an error. -->
+    <string name="errorHeader">Something went wrong. 🙁 Can we help? Please tap on “%s” to get in touch.</string>
+    <string name="close">Close</string>
+
+    <string name="noBrowserApp">No browser found.</string>
+    <string name="noEmailApp">No email app found.</string>
+    <string name="noShareApp">No sharing apps found.</string>
+
+    <!-- Permissions -->
+
+    <string name="permissionRationaleForRingtone">To set “%s” as a ringtone, allow the app permission to modify system settings.</string>
+    <string name="openSystemSettings">Open system settings</string>
+    <string name="noPermissionsSettingsScreenFound">No permissions settings screen found</string>
+
+</resources>

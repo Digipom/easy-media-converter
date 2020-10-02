@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
+ *
+ * https://github.com/Digipom/easy-media-converter
+ *
+ * This file is part of Easy Media Converter.
+ *
+ * Easy Media Converter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Easy Media Converter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Easy Media Converter.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".player.EditActionsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/convert_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/convert"
+            app:icon="@drawable/ic_convert_black_24dp" />
+
+        <Button
+            android:id="@+id/convert_to_video_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/convert_to_video"
+            app:icon="@drawable/ic_music_video_black_24dp" />
+
+        <Button
+            android:id="@+id/extract_audio_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/extract_audio"
+            app:icon="@drawable/ic_music_note_black_24dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/colorPrimary" />
+
+        <Button
+            android:id="@+id/trim_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/trim"
+            app:icon="@drawable/ic_trim_black_24dp" />
+
+        <Button
+            android:id="@+id/cut_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/cut"
+            app:icon="@drawable/ic_cut_black_24dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/colorPrimary" />
+
+        <Button
+            android:id="@+id/adjust_speed_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/adjust_speed"
+            app:icon="@drawable/ic_adjust_speed_24dp" />
+
+        <Button
+            android:id="@+id/adjust_volume_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/adjust_volume"
+            app:icon="@drawable/ic_adjust_volume_black_24dp" />
+
+        <Button
+            android:id="@+id/add_silence_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/add_silence"
+            app:icon="@drawable/ic_add_silence_black_24dp" />
+
+        <Button
+            android:id="@+id/normalize_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/normalize"
+            app:icon="@drawable/ic_normalize_24dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/colorPrimary" />
+
+        <Button
+            android:id="@+id/split_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/split"
+            app:icon="@drawable/ic_split_black_24dp" />
+
+        <Button
+            android:id="@+id/combine_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/combine"
+            app:icon="@drawable/ic_combine_black_24dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/colorPrimary" />
+
+        <Button
+            android:id="@+id/set_as_ringtone_button"
+            style="@style/EditActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/editActionButtonHorizontalMargin"
+            android:layout_marginEnd="@dimen/editActionButtonHorizontalMargin"
+            android:text="@string/set_as_ringtone"
+            app:icon="@drawable/ic_set_as_ringtone_black_24dp" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

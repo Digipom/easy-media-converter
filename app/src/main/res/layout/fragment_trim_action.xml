@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/*
+ * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
+ *
+ * https://github.com/Digipom/easy-media-converter
+ *
+ * This file is part of Easy Media Converter.
+ *
+ * Easy Media Converter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Easy Media Converter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Easy Media Converter.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".player.trim.TrimActionFragment">
+
+    <TextView
+        android:id="@+id/heading_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:text="@string/select_range_to_keep"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.appyvet.materialrangebar.RangeBar
+        android:id="@+id/range_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:paddingStart="@dimen/text_margin"
+        android:paddingEnd="@dimen/text_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/heading_textview"
+        app:mrb_barWeight="2dp"
+        app:mrb_connectingLineColor="#555555"
+        app:mrb_connectingLineWeight="2dp"
+        app:mrb_pinRadius="0dp"
+        app:mrb_rangeBar="true"
+        app:mrb_rangeBarColor="@color/pureRed"
+        app:mrb_rangeBar_rounded="true"
+        app:mrb_selectorColor="@color/pureRed"
+        app:mrb_selectorSize="10dp"
+        app:mrb_temporaryPins="true"
+        app:mrb_tickEnd="10000"
+        app:mrb_tickHeight="0dp"
+        app:mrb_tickStart="0" />
+
+    <TextView
+        android:id="@+id/trim_before_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:text="00:00"
+        app:layout_constraintStart_toStartOf="@+id/range_seekbar"
+        app:layout_constraintTop_toTopOf="@id/range_seekbar"
+        tools:ignore="HardcodedText"
+        tools:text="00:00" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/darkerGray"
+        app:layout_constraintEnd_toEndOf="@id/trim_before_textview"
+        app:layout_constraintStart_toStartOf="@id/trim_before_textview"
+        app:layout_constraintTop_toBottomOf="@id/trim_before_textview" />
+
+    <TextView
+        android:id="@+id/trim_after_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:text="00:00"
+        app:layout_constraintEnd_toEndOf="@id/range_seekbar"
+        app:layout_constraintTop_toTopOf="@id/range_seekbar"
+        tools:ignore="HardcodedText"
+        tools:text="1:00:00" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/darkerGray"
+        app:layout_constraintEnd_toEndOf="@id/trim_after_textview"
+        app:layout_constraintStart_toStartOf="@id/trim_after_textview"
+        app:layout_constraintTop_toBottomOf="@id/trim_after_textview" />
+
+    <TextView
+        android:id="@+id/recording_too_short_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:text="@string/warning_remaining_section_would_be_too_short"
+        android:textColor="@color/pureRed"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/range_seekbar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/*
+ * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
+ *
+ * https://github.com/Digipom/easy-media-converter
+ *
+ * This file is part of Easy Media Converter.
+ *
+ * Easy Media Converter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Easy Media Converter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Easy Media Converter.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <color name="colorPrimary">#1C2436</color>
+    <color name="colorPrimaryDark">#151B28</color>
+    <color name="colorPrimaryVariant">#151B28</color>
+    <color name="colorPrimaryLight">#3C4150</color>
+
+    <color name="colorSecondary">#E51B4B</color>
+    <color name="colorSecondaryVariant">#AB0024</color>
+
+    <color name="recentsHeaderTextColor">#9DA0A6</color>
+    <color name="cardHeaderTextColor">#969AA2</color>
+    <color name="editActionTextColor">#A1A3A9</color>
+
+    <color name="highlightedActionBackgroundTintColor">#2E1B2D</color>
+
+    <color name="fabSeparatorLineColor">#383F4E</color>
+
+    <color name="pureRed">#FF0000</color>
+
+    <color name="darkerGray">#555555</color>
+</resources>

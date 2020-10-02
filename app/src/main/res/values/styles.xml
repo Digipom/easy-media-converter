@@ -1,0 +1,133 @@
+<!--
+/*
+ * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
+ *
+ * https://github.com/Digipom/easy-media-converter
+ *
+ * This file is part of Easy Media Converter.
+ *
+ * Easy Media Converter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Easy Media Converter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Easy Media Converter.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
+
+        <item name="android:colorBackground">@color/colorPrimaryDark</item>
+        <item name="colorOnBackground">@android:color/white</item>
+        <item name="android:fontFamily">@string/sans_serif_condensed</item>
+
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+
+        <item name="alertDialogTheme">@style/AppTheme.MaterialAlertDialog</item>
+    </style>
+
+    <style name="AppTheme.FAB" parent="ThemeOverlay.MaterialComponents">
+        <item name="colorOnSecondary">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents" />
+
+    <style name="AppTheme.Picker" parent="Theme.MaterialComponents">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AppTheme.TopToolbar" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.BottomAppBar" parent="ThemeOverlay.MaterialComponents.BottomAppBar.Primary">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="android:drawableTint">@android:color/white</item>
+        <item name="tint">@android:color/white</item>
+    </style>
+
+    <style name="RecentsCardHeaderTextStyle">
+        <item name="android:drawableTint">@color/cardHeaderTextColor</item>
+        <item name="android:textColor">@color/cardHeaderTextColor</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body1</item>
+        <item name="android:drawablePadding">4dp</item>
+    </style>
+
+    <style name="RecentsCardTitleTextStyle">
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline6
+        </item>
+    </style>
+
+    <style name="EditActionButton" parent="@style/Widget.MaterialComponents.Button.TextButton.Icon">
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="iconPadding">32dp</item>
+        <item name="iconTint">@color/editActionTextColor</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/editActionTextColor</item>
+    </style>
+
+    <style name="SelectableChip" parent="@style/Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/chip_background_color</item>
+        <item name="chipCornerRadius">4dp</item>
+        <item name="chipStrokeColor">?attr/colorSecondary</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textAppearance">@style/SelectableChipTextAppearance</item>
+    </style>
+
+    <style name="SelectableChipTextAppearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:fontFamily">@string/sans_serif_condensed</item>
+    </style>
+
+    <style name="AppTheme.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:fontFamily">@string/sans_serif_condensed</item>
+        <item name="buttonBarPositiveButtonStyle">
+            @style/AppTheme.MaterialAlertDialog.PositiveButton
+        </item>
+        <item name="buttonBarNegativeButtonStyle">
+            @style/AppTheme.MaterialAlertDialog.NegativeButton
+        </item>
+        <item name="buttonBarNeutralButtonStyle">@style/AppTheme.MaterialAlertDialog.NeutralButton
+        </item>
+    </style>
+
+    <style name="AppTheme.MaterialAlertDialog.PositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/colorSecondary</item>
+    </style>
+
+    <style name="AppTheme.MaterialAlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="AppTheme.MaterialAlertDialog.NeutralButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog.Flush">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="BottomSheetItemTextAppearance">
+        <item name="android:fontFamily">@string/sans_serif_condensed</item>
+    </style>
+</resources>

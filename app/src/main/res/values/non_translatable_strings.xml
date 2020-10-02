@@ -1,0 +1,44 @@
+<!--
+/*
+ * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
+ *
+ * https://github.com/Digipom/easy-media-converter
+ *
+ * This file is part of Easy Media Converter.
+ *
+ * Easy Media Converter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Easy Media Converter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Easy Media Converter.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="aac" translatable="false">AAC</string>
+    <string name="flac" translatable="false">FLAC</string>
+    <string name="mp3" translatable="false">MP3</string>
+    <string name="m4a" translatable="false">M4A</string>
+    <string name="opus" translatable="false">OPUS</string>
+    <string name="pcm" translatable="false">PCM</string>
+    <string name="ogg_vorbis" translatable="false">OGG</string>
+
+    <string name="mp4" translatable="false">MP4</string>
+    <string name="mkv" translatable="false">MKV</string>
+    <string name="mov" translatable="false">MOV</string>
+    <string name="webm" translatable="false">WEBM</string>
+
+    <string name="marketName" translatable="false">Google Play</string>
+    <string name="sendEmailRecipient" translatable="false">support@digipom.com</string>
+    <string name="marketPage" translatable="false">market://details?id=com.digipom.easymediaconverter&amp;referrer=utm_source%3Demc</string>
+    <string name="marketPageForShare" translatable="false">https://play.google.com/store/apps/details?id=com.digipom.easymediaconverter&amp;referrer=utm_source%3Dshare-from-app</string>
+    <string name="marketPageForShareShort" translatable="false">@string/marketPageForShare</string>
+    <string name="moreAppsMarketPage" translatable="false">market://search?q=pub:Digipom&amp;referrer=utm_source%3Demc</string>
+
+</resources>

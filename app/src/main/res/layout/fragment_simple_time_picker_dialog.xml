@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/*
+ * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
+ *
+ * https://github.com/Digipom/easy-media-converter
+ *
+ * This file is part of Easy Media Converter.
+ *
+ * Easy Media Converter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Easy Media Converter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Easy Media Converter.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TableLayout
+        android:id="@+id/table_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TableRow android:paddingBottom="10dp">
+
+            <TextView
+                android:layout_gravity="center"
+                android:text="@string/hours"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            <Space />
+
+            <TextView
+                android:layout_gravity="center"
+                android:text="@string/minutes"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            <Space />
+
+            <TextView
+                android:layout_gravity="center"
+                android:text="@string/seconds"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+            <Space />
+
+            <TextView
+                android:layout_gravity="center"
+                android:text="@string/hundredths_of_milliseconds"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+        </TableRow>
+
+        <TableRow>
+
+            <NumberPicker
+                android:id="@+id/hours_picker"
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                android:theme="@style/AppTheme.Picker" />
+
+            <TextView
+                android:id="@+id/hours_minutes_separator"
+                android:layout_gravity="center_vertical"
+                android:text=":"
+                tools:ignore="HardcodedText" />
+
+            <NumberPicker
+                android:id="@+id/minutes_picker"
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                android:theme="@style/AppTheme.Picker" />
+
+            <TextView
+                android:id="@+id/minutes_seconds_separator"
+                android:layout_gravity="center_vertical"
+                android:text=":"
+                tools:ignore="HardcodedText" />
+
+            <NumberPicker
+                android:id="@+id/seconds_picker"
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                android:theme="@style/AppTheme.Picker" />
+
+            <TextView
+                android:id="@+id/seconds_tenths_separator"
+                android:layout_gravity="center_vertical"
+                android:text="."
+                tools:ignore="HardcodedText" />
+
+            <NumberPicker
+                android:id="@+id/tenths_picker"
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                android:theme="@style/AppTheme.Picker" />
+        </TableRow>
+    </TableLayout>
+
+    <TextView
+        android:id="@+id/allowable_range_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_margin"
+        android:text="@string/allowable_time_range"
+        tools:text="Allowable range: 00:00 - 00:05" />
+
+</LinearLayout>
