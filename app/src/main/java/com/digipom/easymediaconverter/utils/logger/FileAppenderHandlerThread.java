@@ -210,8 +210,8 @@ final class FileAppenderHandlerThread extends HandlerThread {
         final File logFileOne = logFileOne();
         final File logFileTwo = logFileTwo();
 
-        final boolean oneExistsAndIsOverCapacity = logFileOne.exists() && logFileOne.length() >= maxLogSizeInBytes;
-        final boolean twoExistsAndIsOverCapacity = logFileTwo.exists() && logFileTwo.length() >= maxLogSizeInBytes;
+        final boolean oneExistsAndIsOverCapacity = logFileOne.exists() && logFileOne.length() > maxLogSizeInBytes;
+        final boolean twoExistsAndIsOverCapacity = logFileTwo.exists() && logFileTwo.length() > maxLogSizeInBytes;
 
         if (currentFile == null) {
             if (oneExistsAndIsOverCapacity && !twoExistsAndIsOverCapacity) {
@@ -220,17 +220,17 @@ final class FileAppenderHandlerThread extends HandlerThread {
                 switchToLogFile(logFileOne);
             }
         } else {
-            if (currentFile == logFileTwo && twoExistsAndIsOverCapacity) {
+            if (currentFile.equals(logFileTwo) && twoExistsAndIsOverCapacity) {
                 switchToLogFile(logFileOne);
-            } else if (currentFile == logFileOne && oneExistsAndIsOverCapacity) {
+            } else if (currentFile.equals(logFileOne) && oneExistsAndIsOverCapacity) {
                 switchToLogFile(logFileTwo);
             }
         }
 
         // Capacity checks -- truncate the log file we're not using
-        if (currentFile == logFileOne && twoExistsAndIsOverCapacity) {
+        if (currentFile != null && currentFile.equals(logFileOne) && twoExistsAndIsOverCapacity) {
             keepEndOfFileToCapacity(logFileTwo);
-        } else if (currentFile == logFileTwo && oneExistsAndIsOverCapacity) {
+        } else if (currentFile != null && currentFile.equals(logFileTwo) && oneExistsAndIsOverCapacity) {
             keepEndOfFileToCapacity(logFileOne);
         }
     }
