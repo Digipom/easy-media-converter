@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
  *
@@ -134,4 +133,143 @@
             android:text="@string/webm"
             android:textAllCaps="true" />
     </com.google.android.material.chip.ChipGroup>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/conversion_chipgroup_bottom_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="audio_conversions_chipgroup, video_conversions_chipgroup" />
+
+    <TextView
+        android:id="@+id/bitrate_heading_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginTop="8dp"
+        android:text="@string/bitrate"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/conversion_chipgroup_bottom_barrier" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/bitrate_chipgroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bitrate_heading_textview"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_button_default_bitrate"
+            style="@style/SelectableChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/default_bitrate" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_button_cbr"
+            style="@style/SelectableChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cbr" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_button_abr"
+            style="@style/SelectableChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/abr" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_button_vbr"
+            style="@style/SelectableChip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vbr" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/bitrate_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/text_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bitrate_chipgroup"
+        tools:text="128 kbps" />
+
+    <LinearLayout
+        android:id="@+id/bitrate_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bitrate_textview">
+
+        <ImageButton
+            android:id="@+id/bitrate_left_adjust_arrow"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/decreaseContentDescription"
+            android:src="@drawable/ic_chevron_left_black_24dp"
+            android:tint="?attr/colorControlNormal" />
+
+        <SeekBar
+            android:id="@+id/bitrate_seekbar"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:max="10000"
+            android:progress="5000" />
+
+        <ImageButton
+            android:id="@+id/bitrate_right_adjust_arrow"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/increaseContentDescription"
+            android:src="@drawable/ic_chevron_right_black_24dp"
+            android:tint="?attr/colorControlNormal" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/bitrate_quality_explainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:text="@string/lower_values_indicate_higher_quality"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bitrate_selector" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/bitrate_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="bitrate_chipgroup, bitrate_heading_textview, bitrate_textview, bitrate_selector, bitrate_quality_explainer"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/bitrate_customizations_subgroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="bitrate_textview, bitrate_selector, bitrate_quality_explainer"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

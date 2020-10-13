@@ -148,6 +148,11 @@
 
     <!-- Specific action strings -->
 
+    <string name="bitrate">Bitrate</string>
+    <string name="default_bitrate">Default</string>
+    <string name="bitrate_quality">Quality: %d</string>
+    <string name="lower_values_indicate_higher_quality">Lower values are higher quality</string>
+
     <string name="video">Video</string>
     <string name="will_make_mp4_video">Audio will be exported as an MP4 video.</string>
     <string name="cover_image_content_description">Cover image</string>

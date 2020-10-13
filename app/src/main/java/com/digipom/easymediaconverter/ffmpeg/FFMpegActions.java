@@ -33,6 +33,7 @@ import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
+import com.digipom.easymediaconverter.edit.Bitrates.BitrateWithValue;
 import com.digipom.easymediaconverter.edit.OutputFormatType;
 import com.digipom.easymediaconverter.edit.RingtoneType;
 import com.digipom.easymediaconverter.media.MediaItem;
@@ -228,7 +229,9 @@ class FFMpegActions {
     }
 
     static abstract class ActionWithSingleInput extends ActionWithTarget {
+        @NonNull
         final Uri inputUri;
+        @NonNull
         final String inputFileName;
 
         ActionWithSingleInput(@NonNull Context context,
@@ -250,7 +253,9 @@ class FFMpegActions {
     }
 
     static abstract class ActionWithTarget extends FFMpegAction {
+        @NonNull
         Uri targetUri;
+        @NonNull
         final String targetFileName;
 
         ActionWithTarget(@NonNull Context context, @NonNull Uri targetUri, @NonNull String targetFileName) {
@@ -306,14 +311,19 @@ class FFMpegActions {
     }
 
     static class ConversionAction extends ActionWithSingleInput {
+        @NonNull
         final OutputFormatType outputFormatType;
+        @Nullable
+        final BitrateWithValue optionalSelectedBitrate;
 
         ConversionAction(@NonNull Context context,
                          @NonNull Uri inputUri, @NonNull String inputFileName,
                          @NonNull Uri targetUri, @NonNull String targetFileName,
-                         @NonNull OutputFormatType outputFormatType) {
+                         @NonNull OutputFormatType outputFormatType,
+                         @Nullable BitrateWithValue selectedBitrate) {
             super(context, inputUri, inputFileName, targetUri, targetFileName);
             this.outputFormatType = outputFormatType;
+            this.optionalSelectedBitrate = selectedBitrate;
         }
 
         @Override
@@ -331,6 +341,22 @@ class FFMpegActions {
             // output file extension.
             switch (outputFormatType) {
                 // Audio formats
+                case MP3:
+                    if (optionalSelectedBitrate != null) {
+                        switch (optionalSelectedBitrate.type) {
+                            case ABR:
+                                taskCommands.add("-abr");
+                                taskCommands.add("1");
+                            case CBR:
+                                taskCommands.add("-b:a");
+                                taskCommands.add(optionalSelectedBitrate.value + "k");
+                                break;
+                            case VBR:
+                                taskCommands.add("-qscale:a");
+                                taskCommands.add(String.valueOf(optionalSelectedBitrate.value));
+                        }
+                    }
+                    break;
                 case M4A:
                 case AAC:
                     if (sourceIsAac) {
@@ -481,6 +507,7 @@ class FFMpegActions {
     }
 
     static class ExtractAudioAction extends ActionWithSingleInput {
+        @NonNull
         final OutputFormatType outputFormatType;
 
         ExtractAudioAction(@NonNull Context context,
@@ -999,7 +1026,9 @@ class FFMpegActions {
     }
 
     static class SplitAction extends ActionWithSingleInput {
+        @NonNull
         Uri secondTargetUri;
+        @NonNull
         final String secondTargetFileName;
         final long splitAtMs;
 
@@ -1094,6 +1123,7 @@ class FFMpegActions {
 
     // TODO combine takes on the characteristics of the first stream rather than the best of each stream
     static class CombineAction extends ActionWithTarget {
+        @NonNull
         private final MediaItem[] itemsToCombine;
 
         CombineAction(@NonNull Context context,
@@ -1229,7 +1259,9 @@ class FFMpegActions {
 
     // TODO: Need to test for both types (those needing conversion and those that don't need conversion)
     static class SetAsRingtoneAction extends ActionWithSingleInput {
+        @NonNull
         private final Context context;
+        @NonNull
         final RingtoneType ringtoneType;
         final boolean convertToAac;
 

@@ -33,6 +33,7 @@ import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.digipom.easymediaconverter.edit.Bitrates.BitrateWithValue;
 import com.digipom.easymediaconverter.edit.EditAction;
 import com.digipom.easymediaconverter.edit.OutputFormatType;
 import com.digipom.easymediaconverter.edit.RingtoneType;
@@ -94,14 +95,17 @@ public class FFMpegController {
     public void submitConversionRequest(@NonNull MediaItem input,
                                         @NonNull Uri targetUri,
                                         @NonNull String targetFileName,
-                                        @NonNull OutputFormatType outputFormatType) {
+                                        @NonNull OutputFormatType outputFormatType,
+                                        @Nullable BitrateWithValue selectedBitrate) {
         Logger.v("Adding conversion request for input " + input
                 + ", output " + targetUri + " with name " + targetFileName
-                + " and type " + outputFormatType);
+                + " and type " + outputFormatType
+                + (selectedBitrate != null ? " and custom bitrate type " + selectedBitrate.type
+                + ", value: " + selectedBitrate.value : ""));
         addRequest(
                 new CancellableRequest(getNextRequestId(), EditAction.CONVERT, input,
                         new ConversionAction(context, input.getUri(), input.getFilename(), targetUri,
-                                targetFileName, outputFormatType)));
+                                targetFileName, outputFormatType, selectedBitrate)));
         processPendingRequests();
     }
 

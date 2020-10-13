@@ -26,10 +26,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 
+import com.digipom.easymediaconverter.edit.Bitrates;
+import com.digipom.easymediaconverter.edit.Bitrates.BitrateRange;
+import com.digipom.easymediaconverter.edit.Bitrates.BitrateType;
+import com.digipom.easymediaconverter.edit.Bitrates.BitrateWithValue;
 import com.digipom.easymediaconverter.edit.EditAction;
 import com.digipom.easymediaconverter.edit.OutputFormatType;
 import com.digipom.easymediaconverter.media.MediaItem;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.ABR;
+import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.CBR;
+import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.VBR;
 import static com.digipom.easymediaconverter.edit.OutputFormatType.AAC;
 import static com.digipom.easymediaconverter.edit.OutputFormatType.FLAC;
 import static com.digipom.easymediaconverter.edit.OutputFormatType.M4A;
@@ -51,10 +61,18 @@ import static com.digipom.easymediaconverter.utils.MimeTypeUtils.getMimeTypeForV
 
 public class ConvertActionViewModel extends AndroidViewModel {
     private MediaItem mediaItem;
+
+    @NonNull
+    private final HashMap<OutputFormatType, Map<BitrateType, BitrateRange>> bitrateSpecs = new HashMap<>();
+    // Remember the most recently selected bitrate state by the user
+    @NonNull
+    private final HashMap<OutputFormatType, BitrateState> bitrateStates = new HashMap<>();
+    @NonNull
     private OutputFormatType selectedType = MP3;
 
     public ConvertActionViewModel(@NonNull Application application) {
         super(application);
+        bitrateSpecs.put(MP3, Bitrates.getMp3BitrateSpecs());
     }
 
     void setMediaItem(@NonNull MediaItem mediaItem) {
@@ -130,5 +148,104 @@ public class ConvertActionViewModel extends AndroidViewModel {
     @Nullable
     OutputFormatType getTypeToDisableDueToSameAsSource() {
         return getMatchingOutputType(getCanonicalExtension(mediaItem.getFilename()));
+    }
+
+    boolean hasSelectableBitratesForCurrentFormat() {
+        return bitrateSpecs.containsKey(selectedType);
+    }
+
+    @Nullable
+    BitrateState getCurrentBitrateState() {
+        return bitrateStates.get(selectedType);
+    }
+
+    @Nullable
+    BitrateWithValue getSelectedBitrate() {
+        final BitrateState existingState = bitrateStates.get(selectedType);
+        if (existingState != null) {
+            return new BitrateWithValue(
+                    existingState.forBitrateType,
+                    existingState.bitrateSpec.bitrateValueForStep(existingState.currentStep));
+        }
+
+        return null;
+    }
+
+    void updateSelectedBitrateType(@Nullable BitrateType type) {
+        if (type == null) {
+            bitrateStates.remove(selectedType);
+        } else {
+            // See if we have an existing state.
+            final BitrateState existingState = bitrateStates.get(selectedType);
+            // Specs could be null if this is called after a rotation, even if the bitrate section
+            // is currently hidden.
+            final Map<BitrateType, BitrateRange> specs = bitrateSpecs.get(selectedType);
+            if (specs != null) {
+                final BitrateRange cbrBitrateSpec = specs.get(CBR);
+                final BitrateRange abrBitrateSpec = specs.get(ABR);
+                final BitrateRange vbrBitrateSpec = specs.get(VBR);
+
+                switch (type) {
+                    case CBR:
+                        if (cbrBitrateSpec != null) {
+                            if (existingState == null || existingState.forBitrateType == VBR) {
+                                bitrateStates.put(selectedType, new BitrateState(
+                                        CBR, cbrBitrateSpec, cbrBitrateSpec.defaultStep()));
+                            } else if (existingState.forBitrateType == ABR) {
+                                final int currentKbps = existingState.bitrateSpec.bitrateValueForStep(
+                                        existingState.currentStep);
+                                bitrateStates.put(selectedType, new BitrateState(
+                                        CBR, cbrBitrateSpec, cbrBitrateSpec.closestStepForBitrate(currentKbps)));
+                            }
+                        }
+                        break;
+                    case ABR:
+                        if (abrBitrateSpec != null) {
+                            if (existingState == null || existingState.forBitrateType == VBR) {
+                                bitrateStates.put(selectedType, new BitrateState(
+                                        ABR, abrBitrateSpec, abrBitrateSpec.defaultStep()));
+                            } else if (existingState.forBitrateType == CBR) {
+                                final int currentKbps = existingState.bitrateSpec.bitrateValueForStep(
+                                        existingState.currentStep);
+                                bitrateStates.put(selectedType, new BitrateState(
+                                        ABR, abrBitrateSpec, abrBitrateSpec.closestStepForBitrate(currentKbps)));
+                            }
+                        }
+                        break;
+                    case VBR:
+                        if (vbrBitrateSpec != null) {
+                            if (existingState == null || existingState.forBitrateType != VBR) {
+                                bitrateStates.put(selectedType, new BitrateState(
+                                        VBR, vbrBitrateSpec, vbrBitrateSpec.defaultStep()));
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    void updateCurrentBitrateStep(int currentStep) {
+        final BitrateState existingState = bitrateStates.get(selectedType);
+        // Existing state could be null if this is called after a rotation, for example, even if the
+        // progressbar is hidden.
+        if (existingState != null) {
+            bitrateStates.put(selectedType, new BitrateState(
+                    existingState.forBitrateType, existingState.bitrateSpec, currentStep));
+        }
+    }
+
+    static class BitrateState {
+        final BitrateType forBitrateType;
+        final BitrateRange bitrateSpec;
+        final int currentStep;
+
+        BitrateState(@NonNull BitrateType forBitrateType,
+                     @NonNull BitrateRange bitrateSpec,
+                     int currentStep) {
+            this.forBitrateType = forBitrateType;
+            this.bitrateSpec = bitrateSpec;
+            this.currentStep = currentStep;
+        }
     }
 }

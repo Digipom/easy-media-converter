@@ -34,6 +34,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
 import com.digipom.easymediaconverter.application.BaseApplication;
+import com.digipom.easymediaconverter.edit.Bitrates.BitrateWithValue;
 import com.digipom.easymediaconverter.edit.OutputFormatType;
 import com.digipom.easymediaconverter.edit.RingtoneType;
 import com.digipom.easymediaconverter.ffmpeg.FFMpegController;
@@ -197,9 +198,10 @@ public final class PlayerViewModel extends AndroidViewModel {
 
     void onConvertActionClicked(@NonNull Uri targetUri,
                                 @NonNull String targetFileName,
-                                @NonNull OutputFormatType outputFormatType) {
+                                @NonNull OutputFormatType outputFormatType,
+                                @Nullable BitrateWithValue selectedBitrate) {
         ffMpegController.submitConversionRequest(item,
-                targetUri, targetFileName, outputFormatType);
+                targetUri, targetFileName, outputFormatType, selectedBitrate);
     }
 
     void onMakeVideoActionClicked(@NonNull Uri targetUri,

@@ -27,16 +27,19 @@ import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.digipom.easymediaconverter.R;
+import com.digipom.easymediaconverter.edit.Bitrates.BitrateWithValue;
 import com.digipom.easymediaconverter.edit.OutputFormatType;
 import com.digipom.easymediaconverter.player.MainButtonInterfaces;
 import com.digipom.easymediaconverter.player.PlayerViewModel;
@@ -44,16 +47,22 @@ import com.digipom.easymediaconverter.utils.IntentUtils;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.Locale;
 import java.util.Objects;
 
+import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.ABR;
+import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.CBR;
+import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.VBR;
 import static com.digipom.easymediaconverter.edit.OutputFormatType.MP3;
 import static com.digipom.easymediaconverter.edit.OutputFormatType.MP4;
+import static com.digipom.easymediaconverter.player.convert.ConvertActionViewModel.BitrateState;
 
 public class ConvertActionFragment extends Fragment implements MainButtonInterfaces.HandleMainButtonTapListener {
     public interface OnConvertActionFragmentInteractionListener {
         void onConversionSelected(@NonNull Uri targetUri,
                                   @NonNull String targetFileName,
-                                  @NonNull OutputFormatType outputFormatType);
+                                  @NonNull OutputFormatType outputFormatType,
+                                  @Nullable BitrateWithValue selectedBitrate);
     }
 
     private static final int CREATE_DOCUMENT_REQUEST_CODE = 1;
@@ -72,6 +81,12 @@ public class ConvertActionFragment extends Fragment implements MainButtonInterfa
     private ConvertActionViewModel viewModel;
     private ChipGroup audioChipGroup;
     private ChipGroup videoChipGroup;
+    private Group bitrateGroup;
+    private Group bitrateCustomizationSubgroup;
+    private ChipGroup bitrateChipGroup;
+    private TextView bitrateTextView;
+    private SeekBar bitrateSeekBar;
+    private TextView bitrateQualityExplainer;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -97,9 +112,44 @@ public class ConvertActionFragment extends Fragment implements MainButtonInterfa
         final Chip movChip = view.findViewById(R.id.chip_button_mov);
         final Chip webmChip = view.findViewById(R.id.chip_button_webm);
 
+        bitrateGroup = view.findViewById(R.id.bitrate_group);
+        bitrateCustomizationSubgroup = view.findViewById(R.id.bitrate_customizations_subgroup);
+        bitrateChipGroup = view.findViewById(R.id.bitrate_chipgroup);
+        bitrateTextView = view.findViewById(R.id.bitrate_textview);
+        bitrateSeekBar = view.findViewById(R.id.bitrate_seekbar);
+        final View decreaseBitrate = view.findViewById(R.id.bitrate_left_adjust_arrow);
+        final View increaseBitrate = view.findViewById(R.id.bitrate_right_adjust_arrow);
+        bitrateQualityExplainer = view.findViewById(R.id.bitrate_quality_explainer);
+
         audioChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.chip_button_mp3:
+                        viewModel.onMp3Selected();
+                        break;
+                    case R.id.chip_button_m4a:
+                        viewModel.onM4aSelected();
+                        break;
+                    case R.id.chip_button_aac:
+                        viewModel.onAacSelected();
+                        break;
+                    case R.id.chip_button_ogg:
+                        viewModel.onOggSelected();
+                        break;
+                    case R.id.chip_button_opus:
+                        viewModel.onOpusSelected();
+                        break;
+                    case R.id.chip_button_flac:
+                        viewModel.onFlacSelected();
+                        break;
+                    case R.id.chip_button_pcm:
+                        viewModel.onPcmSelected();
+                        break;
+                }
+
+                syncBitrateSectionWithViewModel();
+
                 if (getActivity() != null) {
                     ((MainButtonInterfaces.MainButtonController) getActivity()).onButtonStateUpdated();
                 }
@@ -108,96 +158,25 @@ public class ConvertActionFragment extends Fragment implements MainButtonInterfa
         videoChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.chip_button_mp4:
+                        viewModel.onMp4Selected();
+                        break;
+                    case R.id.chip_button_mkv:
+                        viewModel.onMkvSelected();
+                        break;
+                    case R.id.chip_button_mov:
+                        viewModel.onMovSelected();
+                        break;
+                    case R.id.chip_button_webm:
+                        viewModel.onWebmSelected();
+                        break;
+                }
+
+                syncBitrateSectionWithViewModel();
+
                 if (getActivity() != null) {
                     ((MainButtonInterfaces.MainButtonController) getActivity()).onButtonStateUpdated();
-                }
-            }
-        });
-        mp3Chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onMp3Selected();
-                }
-            }
-        });
-        m4aChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onM4aSelected();
-                }
-            }
-        });
-        aacChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onAacSelected();
-                }
-            }
-        });
-        oggChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onOggSelected();
-                }
-            }
-        });
-        opusChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onOpusSelected();
-                }
-            }
-        });
-        flacChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onFlacSelected();
-                }
-            }
-        });
-        pcmChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onPcmSelected();
-                }
-            }
-        });
-        mp4Chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onMp4Selected();
-                }
-            }
-        });
-        mkvChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onMkvSelected();
-                }
-            }
-        });
-        movChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onMovSelected();
-                }
-            }
-        });
-        webmChip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    viewModel.onWebmSelected();
                 }
             }
         });
@@ -252,6 +231,65 @@ public class ConvertActionFragment extends Fragment implements MainButtonInterfa
             mkvChip.setChecked(true);
         }
 
+        // Do a full sync of the bitrate section before we add listeners
+        syncBitrateSectionWithViewModel();
+
+        bitrateChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.chip_button_default_bitrate:
+                        viewModel.updateSelectedBitrateType(null);
+                        break;
+                    case R.id.chip_button_cbr:
+                        viewModel.updateSelectedBitrateType(CBR);
+                        break;
+                    case R.id.chip_button_vbr:
+                        viewModel.updateSelectedBitrateType(VBR);
+                        break;
+                    case R.id.chip_button_abr:
+                        viewModel.updateSelectedBitrateType(ABR);
+                        break;
+                }
+
+                syncBitrateSectionWithViewModel();
+            }
+        });
+        bitrateSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                viewModel.updateCurrentBitrateStep(progress);
+                final BitrateState currentBitrateState = viewModel.getCurrentBitrateState();
+                // The bitrate state could be null if this was called after a rotation and we
+                // shouldn't actually be showing the progress.
+                if (currentBitrateState != null) {
+                    updateBitrateText(currentBitrateState);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // No-op
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // No-op
+            }
+        });
+        decreaseBitrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bitrateSeekBar.setProgress(Math.max(0, bitrateSeekBar.getProgress() - 1));
+            }
+        });
+        increaseBitrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bitrateSeekBar.setProgress(Math.min(bitrateSeekBar.getMax(), bitrateSeekBar.getProgress() + 1));
+            }
+        });
+
         // Toggling between audio and video options
         sharedViewModel.getObservableVideoSize().observe(getViewLifecycleOwner(), new Observer<Size>() {
             @Override
@@ -265,6 +303,57 @@ public class ConvertActionFragment extends Fragment implements MainButtonInterfa
         });
 
         // TODO making sure view model is in sync with us if process was destroyed?
+    }
+
+    private void syncBitrateSectionWithViewModel() {
+        final boolean shouldShowBitrateSection = viewModel.hasSelectableBitratesForCurrentFormat();
+
+        if (shouldShowBitrateSection) {
+            bitrateGroup.setVisibility(View.VISIBLE);
+            final BitrateState state = viewModel.getCurrentBitrateState();
+            if (state != null) {
+                bitrateCustomizationSubgroup.setVisibility(View.VISIBLE);
+                bitrateSeekBar.setMax(state.bitrateSpec.numSteps());
+                bitrateSeekBar.setProgress(state.currentStep);
+                switch (state.forBitrateType) {
+                    case CBR:
+                        bitrateChipGroup.check(R.id.chip_button_cbr);
+                        break;
+                    case VBR:
+                        bitrateChipGroup.check(R.id.chip_button_vbr);
+                        break;
+                    case ABR:
+                        bitrateChipGroup.check(R.id.chip_button_abr);
+                        break;
+                }
+
+                updateBitrateText(state);
+                bitrateQualityExplainer.setVisibility(
+                        state.forBitrateType == VBR ? View.VISIBLE : View.GONE);
+            } else {
+                bitrateChipGroup.check(R.id.chip_button_default_bitrate);
+                bitrateCustomizationSubgroup.setVisibility(View.GONE);
+            }
+        } else {
+            bitrateGroup.setVisibility(View.GONE);
+            bitrateCustomizationSubgroup.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateBitrateText(@NonNull BitrateState state) {
+        final int step = bitrateSeekBar.getProgress();
+
+        switch (state.forBitrateType) {
+            case CBR:
+            case ABR:
+                bitrateTextView.setText(String.format(Locale.US, "%d kbps",
+                        state.bitrateSpec.bitrateValueForStep(step)));
+                break;
+            case VBR:
+                bitrateTextView.setText(requireContext().getString(R.string.bitrate_quality,
+                        state.bitrateSpec.bitrateValueForStep(step)));
+                break;
+        }
     }
 
     @Override
@@ -293,7 +382,9 @@ public class ConvertActionFragment extends Fragment implements MainButtonInterfa
                         @Override
                         public void onReceivedUriForNewDocument(@NonNull Uri target) {
                             final String outputFilename = viewModel.getDefaultOutputFilename();
-                            ((OnConvertActionFragmentInteractionListener) activity).onConversionSelected(target, outputFilename, viewModel.getOutputType());
+                            ((OnConvertActionFragmentInteractionListener) activity).onConversionSelected(
+                                    target, outputFilename, viewModel.getOutputType(),
+                                    viewModel.getSelectedBitrate());
                         }
                     });
         }

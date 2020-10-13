@@ -47,6 +47,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.digipom.easymediaconverter.R;
+import com.digipom.easymediaconverter.edit.Bitrates.BitrateWithValue;
 import com.digipom.easymediaconverter.edit.EditAction;
 import com.digipom.easymediaconverter.edit.OutputFormatType;
 import com.digipom.easymediaconverter.edit.RingtoneType;
@@ -427,8 +428,11 @@ public class PlayerActivity extends AppCompatActivity implements
     // ConvertActionFragment.OnConvertActionFragmentInteractionListener
 
     @Override
-    public void onConversionSelected(@NonNull Uri targetUri, @NonNull String targetFileName, @NonNull OutputFormatType outputFormatType) {
-        viewModel.onConvertActionClicked(targetUri, targetFileName, outputFormatType);
+    public void onConversionSelected(@NonNull Uri targetUri,
+                                     @NonNull String targetFileName,
+                                     @NonNull OutputFormatType outputFormatType,
+                                     @Nullable BitrateWithValue selectedBitrate) {
+        viewModel.onConvertActionClicked(targetUri, targetFileName, outputFormatType, selectedBitrate);
         finish();
     }
 

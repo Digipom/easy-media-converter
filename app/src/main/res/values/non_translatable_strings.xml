@@ -34,6 +34,10 @@
     <string name="mov" translatable="false">MOV</string>
     <string name="webm" translatable="false">WEBM</string>
 
+    <string name="cbr" translatable="false">CBR</string>
+    <string name="vbr" translatable="false">VBR</string>
+    <string name="abr" translatable="false">ABR</string>
+
     <string name="marketName" translatable="false">Google Play</string>
     <string name="sendEmailRecipient" translatable="false">support@digipom.com</string>
     <string name="marketPage" translatable="false">market://details?id=com.digipom.easymediaconverter&amp;referrer=utm_source%3Demc</string>
