@@ -22,6 +22,8 @@ package com.digipom.easymediaconverter.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 
 import androidx.annotation.MainThread;
@@ -30,6 +32,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.digipom.easymediaconverter.R;
+import com.digipom.easymediaconverter.utils.logger.Logger;
 
 @MainThread
 public class AppPreferences {
@@ -42,7 +45,25 @@ public class AppPreferences {
     public AppPreferences(@NonNull Context context) {
         this.context = context;
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        initDefaults();
         updateShouldShowRateRequestLiveData();
+    }
+
+    private void initDefaults() {
+        try {
+            if (!preferences.contains(context.getString(R.string.is_early_adopter_key))) {
+                final long beginningOf2021 = 1609459200000L;
+                final PackageManager pm = context.getPackageManager();
+                final PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
+                final long firstInstallTime = packageInfo.firstInstallTime;
+                preferences.edit()
+                        .putBoolean(context.getString(R.string.is_early_adopter_key),
+                                firstInstallTime < beginningOf2021)
+                        .apply();
+            }
+        } catch (Exception e) {
+            Logger.w(e);
+        }
     }
 
     @NonNull

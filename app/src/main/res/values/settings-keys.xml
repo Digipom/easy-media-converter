@@ -21,6 +21,7 @@
  */
 -->
 <resources>
+    <string name="is_early_adopter_key" translatable="false">is_early_adopter_key</string>
     <string name="successful_op_count_key" translatable="false">successful_op_count_key</string>
     <string name="first_check_for_rate_request_date_key" translatable="false">first_check_for_rate_request_date_key</string>
     <string name="has_shown_rate_request_key" translatable="false">has_shown_rate_request_key</string>
