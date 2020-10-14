@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
  *
@@ -105,7 +104,17 @@
         <receiver
             android:name=".receiver.NotificationsReceiver"
             android:exported="false" />
-
     </application>
 
+    <!-- Used so the send feedback code can work on Android 11. -->
+    <!--suppress AndroidElementNotAllowed -->
+    <queries>
+        <!--suppress AndroidElementNotAllowed -->
+        <intent>
+            <!--suppress AndroidElementNotAllowed -->
+            <action android:name="android.intent.action.SENDTO" />
+            <!--suppress AndroidElementNotAllowed -->
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
 </manifest>
