@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+/*
+ * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
+ *
+ * https://github.com/Digipom/easy-media-converter
+ *
+ * This file is part of Easy Media Converter.
+ *
+ * Easy Media Converter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Easy Media Converter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Easy Media Converter.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:layout_marginBottom="4dp"
+        app:cardBackgroundColor="@color/colorPrimary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:visibility="visible">
+
+            <TextView
+                android:id="@+id/rate_request_enjoying_this_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/rateRequestPrompt"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                tools:text="Enjoying this version of Easy Media Converter?" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <Button
+                    android:id="@+id/rate_request_not_much"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notMuch"
+                    android:textColor="?attr/colorSecondary" />
+
+                <Button
+                    android:id="@+id/rate_request_yes_a_lot"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yesALot"
+                    android:textColor="?attr/colorSecondary" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</FrameLayout>

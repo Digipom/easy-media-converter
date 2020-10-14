@@ -62,6 +62,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.digipom.easymediaconverter.R;
 import com.digipom.easymediaconverter.application.BaseApplication;
+import com.digipom.easymediaconverter.application.ServiceLocator;
 import com.digipom.easymediaconverter.edit.EditAction;
 import com.digipom.easymediaconverter.errors.ErrorDialogFragment;
 import com.digipom.easymediaconverter.ffmpeg.FFMpegController;
@@ -71,11 +72,15 @@ import com.digipom.easymediaconverter.main.recents.RecentsListViewModel.Complete
 import com.digipom.easymediaconverter.main.recents.RecentsListViewModel.FailedRequestListItem;
 import com.digipom.easymediaconverter.main.recents.RecentsListViewModel.ListItem;
 import com.digipom.easymediaconverter.main.recents.RecentsListViewModel.PreviousHeaderListItem;
+import com.digipom.easymediaconverter.main.recents.RecentsListViewModel.RateRequestListItem;
 import com.digipom.easymediaconverter.main.recents.RecentsListViewModel.RecentHeaderListItem;
 import com.digipom.easymediaconverter.main.recents.RecentsListViewModel.RecentlyOpenedListItem;
 import com.digipom.easymediaconverter.main.recents.RecentsListViewModel.RequestListItem;
 import com.digipom.easymediaconverter.media.MediaItem;
+import com.digipom.easymediaconverter.prefs.AppPreferences;
+import com.digipom.easymediaconverter.utils.ContactUsUtils;
 import com.digipom.easymediaconverter.utils.ExecutorUtils;
+import com.digipom.easymediaconverter.utils.IntentLauncher;
 import com.digipom.easymediaconverter.utils.IntentUtils;
 import com.digipom.easymediaconverter.utils.ListUtils.FadingItemTouchHelperCallback;
 import com.digipom.easymediaconverter.utils.UriUtils;
@@ -87,6 +92,7 @@ import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import static com.digipom.easymediaconverter.utils.AlertDialogUtils.createWithCondensedFontUsingOnShowListener;
+import static com.digipom.easymediaconverter.utils.ContactUsUtils.FeedbackType.CRITICAL_FEEDBACK;
 
 /**
  * A fragment representing a list of Items.
@@ -226,8 +232,9 @@ public class RecentsListFragment extends Fragment {
         private static final int RECENTLY_OPENED_LIST_ITEM_TYPE = 5;
         private static final int COMPLETED_LIST_ITEM_TYPE = 6;
         private static final int FAILED_LIST_ITEM_TYPE = 7;
+        private static final int RATE_REQUEST_LIST_ITEM_TYPE = 8;
 
-        private static final int FOOTER_LIST_ITEM_TYPE = 8;
+        private static final int FOOTER_LIST_ITEM_TYPE = 9;
 
         RecentsItemRecyclerViewAdapter() {
             super(new DiffUtil.ItemCallback<ListItem>() {
@@ -308,6 +315,13 @@ public class RecentsListFragment extends Fragment {
                         (TextView) view.findViewById(R.id.inputs_textview),
                         (TextView) view.findViewById(R.id.short_failure_message),
                         view.findViewById(R.id.more_button));
+            } else if (viewType == RATE_REQUEST_LIST_ITEM_TYPE) {
+                final View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.fragment_recents_rate_request_listitem, parent, false);
+                return new RateRequestViewHolder(view,
+                        (TextView) view.findViewById(R.id.rate_request_enjoying_this_version),
+                        view.findViewById(R.id.rate_request_yes_a_lot),
+                        view.findViewById(R.id.rate_request_not_much));
             } else {
                 // Footer
                 final View view = LayoutInflater.from(parent.getContext())
@@ -444,6 +458,26 @@ public class RecentsListFragment extends Fragment {
                         }
                     }
                 });
+            } else if (itemType == RATE_REQUEST_LIST_ITEM_TYPE) {
+                final RateRequestViewHolder viewHolder = (RateRequestViewHolder) holder;
+                viewHolder.rateRequestTitle.setText(getString(R.string.rateRequestPrompt,
+                        getString(R.string.app_name)));
+                viewHolder.rateRequestYesALot.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                            RateRequestAskForRatingDialogFragment.show(getParentFragmentManager());
+                        }
+                    }
+                });
+                viewHolder.rateRequestNotMuch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                            RateRequestAskForFeedbackDialogFragment.show(getParentFragmentManager());
+                        }
+                    }
+                });
             }
         }
 
@@ -527,6 +561,8 @@ public class RecentsListFragment extends Fragment {
                 return COMPLETED_LIST_ITEM_TYPE;
             } else if (item instanceof FailedRequestListItem) {
                 return FAILED_LIST_ITEM_TYPE;
+            } else if (item instanceof RateRequestListItem) {
+                return RATE_REQUEST_LIST_ITEM_TYPE;
             } else {
                 return FOOTER_LIST_ITEM_TYPE;
             }
@@ -551,7 +587,8 @@ public class RecentsListFragment extends Fragment {
                     || itemViewType == QUEUED_LIST_ITEM_TYPE
                     || itemViewType == RECENTLY_OPENED_LIST_ITEM_TYPE
                     || itemViewType == COMPLETED_LIST_ITEM_TYPE
-                    || itemViewType == FAILED_LIST_ITEM_TYPE;
+                    || itemViewType == FAILED_LIST_ITEM_TYPE
+                    || itemViewType == RATE_REQUEST_LIST_ITEM_TYPE;
         }
 
         class HeaderViewHolder extends RecyclerView.ViewHolder {
@@ -637,6 +674,22 @@ public class RecentsListFragment extends Fragment {
             }
         }
 
+        private class RateRequestViewHolder extends RecyclerView.ViewHolder {
+            final TextView rateRequestTitle;
+            final View rateRequestYesALot;
+            final View rateRequestNotMuch;
+
+            public RateRequestViewHolder(@NonNull View itemView,
+                                         @NonNull TextView rateRequestTitle,
+                                         @NonNull View rateRequestYesALot,
+                                         @NonNull View rateRequestNotMuch) {
+                super(itemView);
+                this.rateRequestTitle = rateRequestTitle;
+                this.rateRequestYesALot = rateRequestYesALot;
+                this.rateRequestNotMuch = rateRequestNotMuch;
+            }
+        }
+
         // Only a marker class
         class FooterItemViewHolder extends RecyclerView.ViewHolder {
             FooterItemViewHolder(View itemView) {
@@ -701,6 +754,99 @@ public class RecentsListFragment extends Fragment {
                                 }
                             });
                         }
+                    }
+                }
+            });
+            return createWithCondensedFontUsingOnShowListener(builder);
+        }
+    }
+
+    public static class RateRequestAskForRatingDialogFragment extends DialogFragment {
+        private static final String TAG = RateRequestAskForRatingDialogFragment.class.getName();
+
+        public static void show(@NonNull FragmentManager fragmentManager) {
+            final RateRequestAskForRatingDialogFragment fragment = new RateRequestAskForRatingDialogFragment();
+            fragment.show(fragmentManager, TAG);
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            final ServiceLocator serviceLocator = ((BaseApplication) requireContext().getApplicationContext()).getServiceLocator();
+            final AppPreferences appPreferences = serviceLocator.getAppPreferences();
+            final boolean notNowIsNoThanks = appPreferences.shouldShowNoThanksOptionForRateRequest();
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(
+                    new ContextThemeWrapper(
+                            Objects.requireNonNull(getActivity()), R.style.AppTheme_MaterialAlertDialog));
+            builder.setMessage(R.string.pleaseRateUsOnTheMarket);
+            builder.setNegativeButton(notNowIsNoThanks ? R.string.noThanks : R.string.notNow, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                        // Logic should probably be in a viewmodel?
+                        if (notNowIsNoThanks) {
+                            appPreferences.sawRateRequest();
+                        } else {
+                            appPreferences.resetRateRequest();
+                        }
+                    }
+                }
+            });
+            builder.setPositiveButton(R.string.rateAppTitle, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (getActivity() != null && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                        // Logic should probably be in a viewmodel?
+                        appPreferences.sawRateRequest();
+                        IntentLauncher.launchUrlInBrowserOrShowError(getActivity(),
+                                getString(R.string.marketPage), getString(R.string.noBrowserApp));
+                    }
+                }
+            });
+            return createWithCondensedFontUsingOnShowListener(builder);
+        }
+    }
+
+    public static class RateRequestAskForFeedbackDialogFragment extends DialogFragment {
+        private static final String TAG = RateRequestAskForFeedbackDialogFragment.class.getName();
+
+        public static void show(@NonNull FragmentManager fragmentManager) {
+            final RateRequestAskForFeedbackDialogFragment fragment = new RateRequestAskForFeedbackDialogFragment();
+            fragment.show(fragmentManager, TAG);
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+            final ServiceLocator serviceLocator = ((BaseApplication) requireContext().getApplicationContext()).getServiceLocator();
+            final AppPreferences appPreferences = serviceLocator.getAppPreferences();
+            final boolean notNowIsNoThanks = appPreferences.shouldShowNoThanksOptionForRateRequest();
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(
+                    new ContextThemeWrapper(
+                            Objects.requireNonNull(getActivity()), R.style.AppTheme_MaterialAlertDialog));
+            builder.setMessage(R.string.pleaseGetInTouchWithUs);
+            builder.setNegativeButton(notNowIsNoThanks ? R.string.noThanks : R.string.notNow, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                        // Logic should probably be in a viewmodel?
+                        if (notNowIsNoThanks) {
+                            appPreferences.sawRateRequest();
+                        } else {
+                            appPreferences.resetRateRequest();
+                        }
+                    }
+                }
+            });
+            builder.setPositiveButton(R.string.send_feedback, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (getActivity() != null && getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
+                        // Logic should probably be in a viewmodel?
+                        appPreferences.sawRateRequest();
+                        ContactUsUtils.openSendLogsEmail(getActivity(), CRITICAL_FEEDBACK);
                     }
                 }
             });

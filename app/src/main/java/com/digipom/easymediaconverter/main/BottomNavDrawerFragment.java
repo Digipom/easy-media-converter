@@ -54,6 +54,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Objects;
 
 import static com.digipom.easymediaconverter.utils.AlertDialogUtils.createWithCondensedFontUsingOnShowListener;
+import static com.digipom.easymediaconverter.utils.ContactUsUtils.FeedbackType.FEEDBACK;
 
 public class BottomNavDrawerFragment extends BottomSheetDialogFragment {
     static final String TAG = BottomSheetDialogFragment.class.getName();
@@ -72,7 +73,7 @@ public class BottomNavDrawerFragment extends BottomSheetDialogFragment {
                 }
 
                 if (item.getItemId() == R.id.nav_send_feedback) {
-                    ContactUsUtils.openSendLogsEmail(activity);
+                    ContactUsUtils.openSendLogsEmail(activity, FEEDBACK);
                     return true;
                 } else if (item.getItemId() == R.id.nav_rate_the_app) {
                     IntentLauncher.launchUrlInBrowserOrShowError(activity, getString(R.string.marketPage), getString(R.string.noBrowserApp));

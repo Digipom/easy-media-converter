@@ -37,8 +37,34 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class ContactUsUtils {
-    public static void openSendLogsEmail(@NonNull Context context) {
-        final Intent sendEmailIntent = getIntentForSendLogs(context);
+    public enum FeedbackType {
+        FEEDBACK,
+        CRITICAL_FEEDBACK,
+        ERROR,
+    }
+
+    public static void openSendLogsEmail(@NonNull Context context, @NonNull FeedbackType feedbackType) {
+        final Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{context.getString(R.string.sendEmailRecipient)});
+        switch (feedbackType) {
+            case FEEDBACK:
+            default:
+                intent.putExtra(Intent.EXTRA_SUBJECT,
+                        context.getString(R.string.sendEmailSubject,
+                                context.getString(R.string.app_name)));
+                break;
+            case CRITICAL_FEEDBACK:
+                intent.putExtra(Intent.EXTRA_SUBJECT,
+                        context.getString(R.string.sendCriticalEmailSubject,
+                                context.getString(R.string.app_name)));
+                break;
+            case ERROR:
+                intent.putExtra(Intent.EXTRA_SUBJECT,
+                        context.getString(R.string.sendErrorEmailSubject,
+                                context.getString(R.string.app_name)));
+                break;
+        }
 
         final String infoBody = getMarketLine(context)
                 + SystemUtils.getSystemAndPackageInformation(context) + "\n\n";
@@ -47,37 +73,22 @@ public class ContactUsUtils {
 
         if (tempLogFile != null) {
             final ArrayList<Uri> attachments = new ArrayList<>(2);
-            attachments.add(FileProviderUtils.getUriForInternalFile(context, sendEmailIntent, tempLogFile));
-            sendEmailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
-            sendEmailIntent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.sendLogsText) + "\n\n");
+            attachments.add(FileProviderUtils.getUriForInternalFile(context, intent, tempLogFile));
+            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
+            intent.putExtra(Intent.EXTRA_TEXT, context.getString(R.string.sendLogsText) + "\n\n");
             // No longer manually deleting the file. Let Android's cache subsystem take care of it.
         } else {
-            sendEmailIntent.putExtra(Intent.EXTRA_TEXT, infoBody + "\n\n"
+            intent.putExtra(Intent.EXTRA_TEXT, infoBody + "\n\n"
                     + logsBody
                     + context.getString(R.string.sendLogsText) + "\n\n");
         }
 
-        openEmailForm(context, sendEmailIntent);
+        openEmailForm(context, intent);
     }
 
     @NonNull
     private static String getMarketLine(@NonNull Context context) {
         return "Market: " + context.getString(R.string.marketName) + "\n";
-    }
-
-    @NonNull
-    private static Intent getIntentForSendLogs(@NonNull Context context) {
-        final Intent intent = getIntentForSendEmail(context);
-        intent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.sendEmailSubject, context.getString(R.string.app_name)));
-        return intent;
-    }
-
-    @NonNull
-    private static Intent getIntentForSendEmail(@NonNull Context context) {
-        final Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-        intent.setType("message/rfc822");
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{context.getString(R.string.sendEmailRecipient)});
-        return intent;
     }
 
     private static void openEmailForm(@NonNull Context context, @NonNull Intent sendEmailIntent) {

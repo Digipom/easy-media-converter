@@ -1,0 +1,28 @@
+<!--
+/*
+ * Copyright (c) 2020 Kevin Brothaler. All rights reserved.
+ *
+ * https://github.com/Digipom/easy-media-converter
+ *
+ * This file is part of Easy Media Converter.
+ *
+ * Easy Media Converter is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Easy Media Converter is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Easy Media Converter.  If not, see <http://www.gnu.org/licenses/>.
+ */
+-->
+<resources>
+    <string name="successful_op_count_key" translatable="false">successful_op_count_key</string>
+    <string name="first_check_for_rate_request_date_key" translatable="false">first_check_for_rate_request_date_key</string>
+    <string name="has_shown_rate_request_key" translatable="false">has_shown_rate_request_key</string>
+    <string name="should_show_no_thanks_for_rate_request_key" translatable="false">should_show_no_thanks_for_rate_request_key</string>
+</resources>

@@ -26,14 +26,22 @@ import androidx.annotation.NonNull;
 
 import com.digipom.easymediaconverter.ffmpeg.FFMpegController;
 import com.digipom.easymediaconverter.notifications.NotificationsController;
+import com.digipom.easymediaconverter.prefs.AppPreferences;
 
 public class ServiceLocator {
+    private final AppPreferences appPreferences;
     private final NotificationsController notificationsController;
     private final FFMpegController ffMpegController;
 
     ServiceLocator(@NonNull Context context) {
+        appPreferences = new AppPreferences(context);
         notificationsController = new NotificationsController(context);
-        ffMpegController = new FFMpegController(context, notificationsController);
+        ffMpegController = new FFMpegController(context, appPreferences, notificationsController);
+    }
+
+    @NonNull
+    public AppPreferences getAppPreferences() {
+        return appPreferences;
     }
 
     @NonNull

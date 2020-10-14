@@ -53,6 +53,7 @@ import com.digipom.easymediaconverter.ffmpeg.FFMpegRequests.CompletedRequest;
 import com.digipom.easymediaconverter.ffmpeg.FFMpegRequests.FailedRequest;
 import com.digipom.easymediaconverter.media.MediaItem;
 import com.digipom.easymediaconverter.notifications.NotificationsController;
+import com.digipom.easymediaconverter.prefs.AppPreferences;
 import com.digipom.easymediaconverter.services.MediaExportService;
 import com.digipom.easymediaconverter.utils.ExecutorUtils;
 import com.digipom.easymediaconverter.utils.FileUtils;
@@ -70,14 +71,17 @@ public class FFMpegController {
     private final Executor backgroundExecutor = ExecutorUtils.newSingleThreadExecutorWithTimeout();
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
     private final RequestsTracker requestsTracker = new RequestsTracker();
+    private final AppPreferences appPreferences;
     private final NotificationsController notificationsController;
 
     // An observeable that can be used to observe the requests state from the outside world.
     private final MutableLiveData<RequestsState> requestsState = new MutableLiveData<>();
 
     public FFMpegController(@NonNull Context context,
+                            @NonNull AppPreferences appPreferences,
                             @NonNull NotificationsController notificationsController) {
         this.context = context;
+        this.appPreferences = appPreferences;
         this.notificationsController = notificationsController;
     }
 
@@ -391,6 +395,12 @@ public class FFMpegController {
             final CompletedRequest completedRequest = CompletedRequest.createFromRequest(context, request);
             Logger.v("Request " + request + " completed: " + completedRequest);
             requestsTracker.addCompletedRequestAndClearOngoingRequest(completedRequest);
+            mainThreadHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    appPreferences.incrementSuccessfulOpCount();
+                }
+            });
 
             // If there's no active observers, also post a notification.
             if (!requestsState.hasActiveObservers()) {

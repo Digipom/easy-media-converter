@@ -39,6 +39,7 @@ import com.digipom.easymediaconverter.utils.ContactUsUtils;
 import java.util.Objects;
 
 import static com.digipom.easymediaconverter.utils.AlertDialogUtils.createWithCondensedFontUsingOnShowListener;
+import static com.digipom.easymediaconverter.utils.ContactUsUtils.FeedbackType.ERROR;
 
 public class ErrorDialogFragment extends DialogFragment {
     private static final String TAG = ErrorDialogFragment.class.getName();
@@ -87,7 +88,7 @@ public class ErrorDialogFragment extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-                    ContactUsUtils.openSendLogsEmail(requireActivity());
+                    ContactUsUtils.openSendLogsEmail(requireActivity(), ERROR);
                 }
             }
         });

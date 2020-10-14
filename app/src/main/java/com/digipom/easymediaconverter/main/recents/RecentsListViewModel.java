@@ -36,6 +36,7 @@ import com.digipom.easymediaconverter.ffmpeg.FFMpegRequests.CancellableRequest;
 import com.digipom.easymediaconverter.ffmpeg.FFMpegRequests.CompletedRequest;
 import com.digipom.easymediaconverter.ffmpeg.FFMpegRequests.FailedRequest;
 import com.digipom.easymediaconverter.main.recents.RecentlyOpenedRepository.RecentItem;
+import com.digipom.easymediaconverter.prefs.AppPreferences;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +45,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class RecentsListViewModel extends AndroidViewModel {
+    private final AppPreferences appPreferences;
     private final FFMpegController ffMpegController;
     private RecentlyOpenedRepository recentlyOpenedRepository;
 
@@ -55,6 +57,7 @@ public class RecentsListViewModel extends AndroidViewModel {
 
     public RecentsListViewModel(@NonNull Application application) {
         super(application);
+        this.appPreferences = ((BaseApplication) application).getServiceLocator().getAppPreferences();
         this.ffMpegController = ((BaseApplication) application).getServiceLocator().getFFMpegController();
     }
 
@@ -88,6 +91,14 @@ public class RecentsListViewModel extends AndroidViewModel {
                         }
                     }
             );
+            list.addSource(
+                    appPreferences.shouldShowRateRequestLiveData(),
+                    new Observer<Boolean>() {
+                        @Override
+                        public void onChanged(Boolean shouldShowRateRequest) {
+                            rebuildList();
+                        }
+                    });
         }
         return list;
     }
@@ -115,6 +126,9 @@ public class RecentsListViewModel extends AndroidViewModel {
             onUserRemovedItem((CompletedRequestListItem) item);
         } else if (item instanceof FailedRequestListItem) {
             onUserRemovedItem((FailedRequestListItem) item);
+        } else if (item instanceof RateRequestListItem) {
+            appPreferences.dismissRateRequestForNow();
+            rebuildList();
         }
     }
 
@@ -187,6 +201,9 @@ public class RecentsListViewModel extends AndroidViewModel {
             newItems.add(new PreviousHeaderListItem());
 
             final ArrayList<ListItem> previousItems = new ArrayList<>();
+            if (!recentlyOpened.isEmpty() && appPreferences.shouldShowRateRequest()) {
+                previousItems.add(new RateRequestListItem());
+            }
             for (RecentItem item : recentlyOpened) {
                 previousItems.add(new RecentlyOpenedListItem(item));
             }
@@ -217,6 +234,10 @@ public class RecentsListViewModel extends AndroidViewModel {
         RecentlyOpenedListItem(@NonNull RecentItem recentItem) {
             this.recentItem = recentItem;
         }
+    }
+
+    static class RateRequestListItem implements ListItem {
+        // Marker class
     }
 
     abstract static class RequestListItem implements ListItem {
@@ -297,6 +318,9 @@ public class RecentsListViewModel extends AndroidViewModel {
                     o1Timestamp = ((CompletedRequestListItem) o1).request.timestamp;
                 } else if (o1 instanceof FailedRequestListItem) {
                     o1Timestamp = ((FailedRequestListItem) o1).request.timestamp;
+                } else if (o1 instanceof RateRequestListItem) {
+                    // Put it at the top.
+                    o1Timestamp = Long.MAX_VALUE;
                 }
 
                 if (o2 instanceof RecentlyOpenedListItem) {
@@ -305,6 +329,9 @@ public class RecentsListViewModel extends AndroidViewModel {
                     o2Timestamp = ((CompletedRequestListItem) o2).request.timestamp;
                 } else if (o2 instanceof FailedRequestListItem) {
                     o2Timestamp = ((FailedRequestListItem) o2).request.timestamp;
+                } else if (o2 instanceof RateRequestListItem) {
+                    // Put it at the top.
+                    o2Timestamp = Long.MAX_VALUE;
                 }
 
                 return Long.compare(o2Timestamp, o1Timestamp);

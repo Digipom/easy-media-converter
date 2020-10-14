@@ -35,6 +35,8 @@
     <string name="about">About</string>
 
     <string name="sendEmailSubject">[%s] Feedback</string>
+    <string name="sendCriticalEmailSubject">[%s] I’m unsatisfied with the app</string>
+    <string name="sendErrorEmailSubject">[%s] Error</string>
     <string name="sendLogsText">Please enter your feedback or bug report below. System information and app logs are included.</string>
 
     <string name="shareAppSubject">Check out this app</string>
@@ -63,6 +65,18 @@
     <string name="delete">Delete</string>
 
     <string name="deleteConfirmation">“%s” can’t be recovered once deleted.</string>
+
+    <!-- Inline rate request -->
+
+    <!-- %s will be replaced with the name of the app. -->
+    <string name="rateAppTitle">Rate app</string>
+    <string name="rateRequestPrompt">Enjoying this version of %s?</string>
+    <string name="yesALot">Yes, a lot</string>
+    <string name="notMuch">Not much</string>
+    <string name="pleaseGetInTouchWithUs">We would love to help you! Please let us know what we could do to make it better.</string>
+    <string name="pleaseRateUsOnTheMarket">Wonderful! Could you please leave us a 5-star review? It will help us make the app even better for you.</string>
+    <string name="notNow">Not now</string>
+    <string name="noThanks">No thanks</string>
 
     <!-- Media chooser -->
 
