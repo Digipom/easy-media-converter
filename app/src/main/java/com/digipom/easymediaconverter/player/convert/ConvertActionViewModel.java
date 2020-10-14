@@ -36,6 +36,7 @@ import com.digipom.easymediaconverter.media.MediaItem;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.ABR;
 import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.CBR;
@@ -73,6 +74,8 @@ public class ConvertActionViewModel extends AndroidViewModel {
     public ConvertActionViewModel(@NonNull Application application) {
         super(application);
         bitrateSpecs.put(MP3, Bitrates.getMp3BitrateSpecs());
+        bitrateSpecs.put(M4A, Bitrates.getAacBitrateSpecs());
+        bitrateSpecs.put(AAC, Bitrates.getAacBitrateSpecs());
     }
 
     void setMediaItem(@NonNull MediaItem mediaItem) {
@@ -150,8 +153,13 @@ public class ConvertActionViewModel extends AndroidViewModel {
         return getMatchingOutputType(getCanonicalExtension(mediaItem.getFilename()));
     }
 
-    boolean hasSelectableBitratesForCurrentFormat() {
-        return bitrateSpecs.containsKey(selectedType);
+    @Nullable
+    Set<BitrateType> selectableBitratesForCurrentFormat() {
+        final Map<BitrateType, BitrateRange> map = bitrateSpecs.get(selectedType);
+        if (map == null) {
+            return null;
+        }
+        return map.keySet();
     }
 
     @Nullable

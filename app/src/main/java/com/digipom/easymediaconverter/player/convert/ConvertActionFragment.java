@@ -39,23 +39,25 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.digipom.easymediaconverter.R;
+import com.digipom.easymediaconverter.edit.Bitrates.BitrateType;
 import com.digipom.easymediaconverter.edit.Bitrates.BitrateWithValue;
 import com.digipom.easymediaconverter.edit.OutputFormatType;
 import com.digipom.easymediaconverter.player.MainButtonInterfaces;
 import com.digipom.easymediaconverter.player.PlayerViewModel;
+import com.digipom.easymediaconverter.player.convert.ConvertActionViewModel.BitrateState;
 import com.digipom.easymediaconverter.utils.IntentUtils;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.ABR;
 import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.CBR;
 import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.VBR;
 import static com.digipom.easymediaconverter.edit.OutputFormatType.MP3;
 import static com.digipom.easymediaconverter.edit.OutputFormatType.MP4;
-import static com.digipom.easymediaconverter.player.convert.ConvertActionViewModel.BitrateState;
 
 public class ConvertActionFragment extends Fragment implements MainButtonInterfaces.HandleMainButtonTapListener {
     public interface OnConvertActionFragmentInteractionListener {
@@ -84,6 +86,9 @@ public class ConvertActionFragment extends Fragment implements MainButtonInterfa
     private Group bitrateGroup;
     private Group bitrateCustomizationSubgroup;
     private ChipGroup bitrateChipGroup;
+    private Chip bitrateCbr;
+    private Chip bitrateAbr;
+    private Chip bitrateVbr;
     private TextView bitrateTextView;
     private SeekBar bitrateSeekBar;
     private TextView bitrateQualityExplainer;
@@ -115,6 +120,9 @@ public class ConvertActionFragment extends Fragment implements MainButtonInterfa
         bitrateGroup = view.findViewById(R.id.bitrate_group);
         bitrateCustomizationSubgroup = view.findViewById(R.id.bitrate_customizations_subgroup);
         bitrateChipGroup = view.findViewById(R.id.bitrate_chipgroup);
+        bitrateCbr = view.findViewById(R.id.chip_button_cbr);
+        bitrateAbr = view.findViewById(R.id.chip_button_abr);
+        bitrateVbr = view.findViewById(R.id.chip_button_vbr);
         bitrateTextView = view.findViewById(R.id.bitrate_textview);
         bitrateSeekBar = view.findViewById(R.id.bitrate_seekbar);
         final View decreaseBitrate = view.findViewById(R.id.bitrate_left_adjust_arrow);
@@ -306,10 +314,14 @@ public class ConvertActionFragment extends Fragment implements MainButtonInterfa
     }
 
     private void syncBitrateSectionWithViewModel() {
-        final boolean shouldShowBitrateSection = viewModel.hasSelectableBitratesForCurrentFormat();
+        final Set<BitrateType> availableBitrateOptions = viewModel.selectableBitratesForCurrentFormat();
 
-        if (shouldShowBitrateSection) {
+        if (availableBitrateOptions != null && !availableBitrateOptions.isEmpty()) {
             bitrateGroup.setVisibility(View.VISIBLE);
+            bitrateCbr.setVisibility(availableBitrateOptions.contains(CBR) ? View.VISIBLE : View.GONE);
+            bitrateAbr.setVisibility(availableBitrateOptions.contains(ABR) ? View.VISIBLE : View.GONE);
+            bitrateVbr.setVisibility(availableBitrateOptions.contains(VBR) ? View.VISIBLE : View.GONE);
+
             final BitrateState state = viewModel.getCurrentBitrateState();
             if (state != null) {
                 bitrateCustomizationSubgroup.setVisibility(View.VISIBLE);

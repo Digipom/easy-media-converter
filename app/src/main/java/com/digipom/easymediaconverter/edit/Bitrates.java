@@ -22,6 +22,7 @@ package com.digipom.easymediaconverter.edit;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -137,7 +138,7 @@ public abstract class Bitrates {
             } else if (kbps >= maxKbps) {
                 return numSteps() - 1;
             } else {
-                return Math.round((kbps - minKbps) / (float)stepSizeKbps);
+                return Math.round((kbps - minKbps) / (float) stepSizeKbps);
             }
         }
     }
@@ -183,7 +184,8 @@ public abstract class Bitrates {
     }
 
     public static class BitrateWithValue {
-        @NonNull public final BitrateType type;
+        @NonNull
+        public final BitrateType type;
         public final int value;
 
         public BitrateWithValue(@NonNull BitrateType type, int value) {
@@ -203,6 +205,28 @@ public abstract class Bitrates {
                 new AbrBitrateRange(8, 320, 192, 8));
         map.put(BitrateType.VBR,
                 new VbrBitrateRange(9, 0, 2, -1));
+        return map;
+    }
+
+    @NonNull
+    public static HashMap<BitrateType, BitrateRange> getAacBitrateSpecs() {
+        final HashMap<BitrateType, BitrateRange> map = new HashMap<>();
+        final ArrayList<Integer> cbrRatesList = new ArrayList<>();
+        for (int i = 16; i < 40; i += 2) {
+            cbrRatesList.add(i);
+        }
+        for (int i = 40; i < 128; i += 4) {
+            cbrRatesList.add(i);
+        }
+        for (int i = 128; i <= 320; i += 8) {
+            cbrRatesList.add(i);
+        }
+        final int[] cbrRates = new int[cbrRatesList.size()];
+        for (int i = 0; i < cbrRatesList.size(); ++i) {
+            cbrRates[i] = cbrRatesList.get(i);
+        }
+
+        map.put(BitrateType.CBR, new CbrBitrateRange(cbrRates, 128));
         return map;
     }
 }

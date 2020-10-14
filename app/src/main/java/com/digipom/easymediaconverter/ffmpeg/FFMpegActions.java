@@ -63,6 +63,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.digipom.easymediaconverter.edit.Bitrates.BitrateType.CBR;
 import static com.digipom.easymediaconverter.utils.FileTypeExtensions.FILETYPE_AAC;
 import static com.digipom.easymediaconverter.utils.FileTypeExtensions.FILETYPE_M4A;
 import static com.digipom.easymediaconverter.utils.FileTypeExtensions.FILETYPE_MP3;
@@ -359,7 +360,11 @@ class FFMpegActions {
                     break;
                 case M4A:
                 case AAC:
-                    if (sourceIsAac) {
+                    if (optionalSelectedBitrate != null
+                            && optionalSelectedBitrate.type == CBR) {
+                        taskCommands.add("-b:a");
+                        taskCommands.add(optionalSelectedBitrate.value + "k");
+                    } else if (sourceIsAac) {
                         Logger.d("Copying audio streams for AAC");
                         // Just copy over the stream.
                         taskCommands.add("-codec:a");
