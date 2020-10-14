@@ -14,8 +14,8 @@ android {
         // Set the next two digits to build or release number, e.g. 01
         // Reserve the last two digits for a multi-APK variant, e.g. 00
         // https://developer.android.com/training/wearables/apps/packaging
-        versionCode = 301100201
-        versionName "1.1"
+        versionCode = 301110101
+        versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -41,7 +41,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.google.android.material:material:1.2.1'
